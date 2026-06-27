@@ -1,14 +1,3 @@
-"""
-sGUI.py — GUI Pengolahan Citra Digital
-Fitur:
-  - Buka file / folder → navigasi gambar satu per satu
-  - 5 kategori analisis → tiap kategori buka window hasil LENGKAP:
-      • Grid gambar (original + semua hasil)
-      • Histogram intensitas per gambar (seperti histogram.py)
-      • Panel statistik ringkasan
-  - Tema terang & bersih (biru-teal)
-"""
-
 import tkinter as tk
 from tkinter import filedialog, messagebox
 import os
@@ -481,7 +470,6 @@ class SimpleApp:
         if extra_rows:
             height_ratios += [1.8]
 
-        # FIXED: Removed fig.suptitle(...) to get rid of the top text banner inside the figure
         fig = plt.figure(figsize=(4.0 * cols, 3.2 * img_rows + (1.8 if extra_rows else 0.2)),
                           facecolor=MPL_FIG, layout="constrained")
 
@@ -528,7 +516,6 @@ class SimpleApp:
                   font=("Arial", 9, "italic"),
                   bg=bg_btn, fg="#FFFFFF").pack(side=tk.LEFT, padx=4)
 
-        # FIXED: Brought the footer layout directly underneath the header / graph using normal sizing
         footer = tk.Frame(win, bg=C["surface"],
                            highlightbackground=C["border"],
                            highlightthickness=1)
@@ -599,8 +586,6 @@ class SimpleApp:
 
         win.protocol("WM_DELETE_WINDOW", lambda: (plt.close(fig), win.destroy()))
 
-        # FIXED: Removed the fixed math geometry string. Let Tkinter calculate the dimensions naturally 
-        # based on the widget constraints, preventing the buttons from falling off the display.
         win.update_idletasks()
         fig_w, fig_h = fig.get_size_inches()
         w_win = max(int(fig_w * 85), 750)

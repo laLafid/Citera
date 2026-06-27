@@ -1,8 +1,3 @@
-"""
-core/loader.py
-Centralized image loading with randomization and one-by-one navigation.
-"""
-
 import os
 import glob
 import random
@@ -17,18 +12,6 @@ def load_images(
     seed: int = None,
     shuffle: bool = True,
 ) -> list[str]:
-    """
-    Load image paths from a folder.
-
-    Args:
-        folder:  Directory to scan.
-        n:       Max images to return. None = all.
-        seed:    Random seed for reproducibility.
-        shuffle: Randomize order (default True).
-
-    Returns:
-        List of image file paths.
-    """
     if not os.path.isdir(folder):
         raise FileNotFoundError(f"Folder '{folder}' tidak ditemukan.")
 
@@ -61,16 +44,6 @@ def load_faces_or_dataset(n: int = None, seed: int = None) -> tuple[list[str], s
 
 
 class ImageNavigator:
-    """
-    One-image-at-a-time navigator with prev/next support.
-
-    Usage:
-        nav = ImageNavigator("dataset", seed=42)
-        path = nav.current()   # get current image path
-        path = nav.next()      # advance and return next path
-        path = nav.prev()      # go back and return prev path
-        nav.reshuffle()        # randomize order again
-    """
 
     def __init__(self, folder: str = "dataset", seed: int = None):
         self.folder = folder
@@ -82,8 +55,6 @@ class ImageNavigator:
     def _load(self):
         self._paths = load_images(self.folder, shuffle=True, seed=self.seed)
         self._idx = 0
-
-    # ── Navigation ───────────────────────────────────────────────
 
     def current(self) -> str | None:
         if not self._paths:
@@ -109,12 +80,9 @@ class ImageNavigator:
         return self.current()
 
     def reshuffle(self, seed: int = None) -> str | None:
-        """Re-randomize the list and return the new first image."""
         self.seed = seed
         self._load()
         return self.current()
-
-    # ── Info ─────────────────────────────────────────────────────
 
     @property
     def index(self) -> int:
